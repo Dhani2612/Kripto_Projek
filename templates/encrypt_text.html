@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Super Encryption</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0faff;
+            text-align: center;
+            padding: 40px;
+        }
+        h2 { color: #1e8fa8; margin-bottom: 10px; }
+        form {
+            background: #ffffff;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        textarea {
+            width: 90%;
+            height: 100px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            resize: none;
+        }
+        input, button {
+            margin: 8px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #bbb;
+        }
+        button {
+            background-color: #2ab7ca;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1f9ba9;
+        }
+        .result {
+            background: #e9fbff;
+            margin: 20px auto;
+            padding: 15px;
+            width: 80%;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        a {
+            text-decoration: none;
+            color: #2ab7ca;
+        }
+        .header {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>🔐 Super Encryption: Caesar + AES</h2>
+    <p class="header">Halo, {{ username }}!</p>
+
+    <!-- FORM ENKRIPSI -->
+    <form method="POST" action="{{ url_for('encrypt_text') }}">
+        <h3>Enkripsi Teks</h3>
+        <textarea name="text" placeholder="Masukkan teks..."></textarea><br>
+        <input type="number" name="shift" placeholder="Shift (Caesar)" required>
+        <button type="submit">Enkripsi</button>
+    </form>
+
+    {% if encrypted_text %}
+    <div class="result">
+        <h4>🔒 Hasil Enkripsi:</h4>
+        <textarea readonly>{{ encrypted_text }}</textarea>
+    </div>
+    {% endif %}
+
+    <hr style="width:70%; margin: 30px auto; border: 0.5px solid #ccc;">
+
+    <!-- FORM DEKRIPSI -->
+    <form method="POST" action="{{ url_for('encrypt_text') }}">
+        <h3>Dekripsi Teks</h3>
+        <textarea name="ciphertext" placeholder="Masukkan ciphertext..."></textarea><br>
+        <input type="number" name="shift" placeholder="Shift (Caesar)" required>
+        <button type="submit">Dekripsi</button>
+    </form>
+
+    {% if decrypted_text %}
+    <div class="result">
+        <h4>🔓 Hasil Dekripsi:</h4>
+        <textarea readonly>{{ decrypted_text }}</textarea>
+    </div>
+    {% endif %}
+
+    <p><a href="{{ url_for('dashboard') }}">← Kembali ke Dashboard</a></p>
+</body>
+</html>

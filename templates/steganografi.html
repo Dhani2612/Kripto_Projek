@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Steganografi | Kriptografi App</title>
+    <style>
+        body { font-family: Arial; background-color: #eaf8f9; text-align: center; padding-top: 40px; }
+        .container { background: white; width: 60%; margin: auto; padding: 30px; border-radius: 10px;
+                     box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        input[type="file"], textarea { margin: 15px; width: 80%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+        button { background-color: #2ab7ca; color: white; border: none; padding: 10px 20px;
+                 border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #1f9ba9; }
+        .msg { margin-top: 20px; color: #00796b; white-space: pre-wrap; }
+        a { text-decoration: none; color: #2ab7ca; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if mode == "encode" %}
+        <h2>🖼️ Steganografi - Sembunyikan Pesan</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required><br>
+            <textarea name="message" rows="4" placeholder="Tulis pesan rahasia..." required></textarea><br>
+            <button type="submit">Sisipkan Pesan</button>
+        </form>
+        {% else %}
+        <h2>🔍 Steganografi - Baca Pesan</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required><br>
+            <button type="submit">Ambil Pesan</button>
+        </form>
+        {% endif %}
+
+        {% if message %}
+        <div class="msg">{{ message }}</div>
+        {% endif %}
+
+        <hr>
+        {% if mode == "encode" %}
+        <p><a href="{{ url_for('steganografi_decode') }}">Ingin membaca pesan dari gambar?</a></p>
+        {% else %}
+        <p><a href="{{ url_for('steganografi_encode') }}">Ingin menyembunyikan pesan ke gambar?</a></p>
+        {% endif %}
+        <p><a href="{{ url_for('dashboard') }}">← Kembali ke Dashboard</a></p>
+    </div>
+</body>
+</html>

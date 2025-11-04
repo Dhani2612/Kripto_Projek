@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+.env
+/uploads/
+encrypted/
+database/app.db
+.DS_Store
+.idea/
+.vscode/

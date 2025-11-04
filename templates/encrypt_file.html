@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Enkripsi File | Kriptografi App</title>
+    <style>
+        body { font-family: Arial; background-color: #eaf8f9; text-align: center; padding-top: 40px; }
+        .container { background: white; width: 50%; margin: auto; padding: 30px; border-radius: 10px;
+                     box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        input[type="file"] { margin: 15px; }
+        button { background-color: #2ab7ca; color: white; border: none; padding: 10px 20px;
+                 border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #1f9ba9; }
+        .msg { margin-top: 20px; color: #00796b; }
+        a { text-decoration: none; color: #2ab7ca; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>{{ "🔐 Enkripsi File (Fernet)" if mode == "encrypt" else "🔓 Dekripsi File (Fernet)" }}</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <br>
+            <button type="submit">{{ "Enkripsi" if mode == "encrypt" else "Dekripsi" }}</button>
+        </form>
+
+        {% if message %}
+        <p class="msg">{{ message }}</p>
+        {% endif %}
+
+        <hr>
+        {% if mode == "encrypt" %}
+        <p><a href="{{ url_for('decrypt_file_route') }}">Ingin mendekripsi file?</a></p>
+        {% else %}
+        <p><a href="{{ url_for('encrypt_file_route') }}">Ingin mengenkripsi file?</a></p>
+        {% endif %}
+        <p><a href="{{ url_for('dashboard') }}">← Kembali ke Dashboard</a></p>
+    </div>
+</body>
+</html>
