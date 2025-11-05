@@ -278,6 +278,8 @@ def logout():
 # ======================================================
 # MAIN ENTRY
 # ======================================================
-if __name__ == "__main__":
-    os.makedirs("database", exist_ok=True)
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     os.makedirs("database", exist_ok=True)
+#     app.run(debug=True)
+os.makedirs("database", exist_ok=True)
+app = app
