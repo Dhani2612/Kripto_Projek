@@ -9,3 +9,5 @@ database/app.db
 .idea/
 .vscode/.env
 database/
+.env
+database/
