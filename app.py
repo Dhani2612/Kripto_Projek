@@ -278,25 +278,34 @@ def logout():
 # ======================================================
 # MAIN ENTRY
 # ======================================================
-# if __name__ == "__main__":
-#     os.makedirs("database", exist_ok=True)
-#     app.run(debug=True)
-# ======================================================
-# KONFIGURASI DATABASE AMAN UNTUK SERVERLESS
-# ======================================================
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, "database", "app.db")
+if __name__ == "__main__":
+    os.makedirs("database", exist_ok=True)
+    os.makedirs("uploads", exist_ok=True)
+    os.makedirs("encrypted", exist_ok=True)
+    
+    # Pastikan database sudah ada
+    if not os.path.exists(DB_PATH):
+        conn = sqlite3.connect(DB_PATH)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE,
+                password TEXT
+            )
+        """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS encrypted_messages (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT,
+                plaintext TEXT,
+                ciphertext TEXT,
+                algorithm TEXT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        conn.close()
+        print("✅ Database berhasil dibuat")
 
-def get_db_connection():
-    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
-
-
-# ======================================================
-# ENTRY POINT UNTUK VERCEL
-# ======================================================
-os.makedirs("database", exist_ok=True)
-app = app
+    # Jalankan server dengan mode deployment
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
