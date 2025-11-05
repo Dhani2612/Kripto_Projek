@@ -280,32 +280,4 @@ def logout():
 # ======================================================
 if __name__ == "__main__":
     os.makedirs("database", exist_ok=True)
-    os.makedirs("uploads", exist_ok=True)
-    os.makedirs("encrypted", exist_ok=True)
-    
-    # Pastikan database sudah ada
-    if not os.path.exists(DB_PATH):
-        conn = sqlite3.connect(DB_PATH)
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT UNIQUE,
-                password TEXT
-            )
-        """)
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS encrypted_messages (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT,
-                plaintext TEXT,
-                ciphertext TEXT,
-                algorithm TEXT,
-                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-        conn.close()
-        print("✅ Database berhasil dibuat")
-
-    # Jalankan server dengan mode deployment
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-
+    app.run(debug=True)
