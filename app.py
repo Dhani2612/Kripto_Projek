@@ -279,5 +279,7 @@ def logout():
 # MAIN ENTRY
 # ======================================================
 if __name__ == "__main__":
-    os.makedirs("database", exist_ok=True)
-    app.run(debug=True)
+    app.run(
+        debug=True,
+        ssl_context=("localhost+2.pem", "localhost+2-key.pem")
+    )
