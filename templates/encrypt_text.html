@@ -1,67 +1,170 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Super Encryption</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0faff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0fbfe 0%, #e0f2f5 100%);
             text-align: center;
-            padding: 40px;
+            padding-top: 40px;
+            margin: 0;
+            min-height: 100vh;
         }
-        h2 { color: #1e8fa8; margin-bottom: 10px; }
+
+        h2 {
+            color: #2ab7ca;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .header {
+            font-size: 16px;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
         form {
-            background: #ffffff;
-            padding: 20px;
-            margin: 20px auto;
-            width: 80%;
-            max-width: 600px;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-        textarea {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            margin: 0 auto 25px;
             width: 90%;
-            height: 100px;
+            max-width: 650px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: transform 0.3s ease;
+        }
+
+        form:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h3 {
+            color: #178392;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e0f2f5;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
             margin-top: 10px;
             border-radius: 8px;
-            border: 1px solid #ccc;
-            padding: 10px;
+            border: 1px solid #ddd;
+            padding: 15px;
             resize: none;
+            font-family: inherit;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
         }
-        input, button {
-            margin: 8px;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #bbb;
+
+        textarea:focus {
+            border-color: #2ab7ca;
+            outline: none;
+            box-shadow: 0 0 8px rgba(42, 183, 202, 0.2);
         }
+
+        input[type="number"] {
+            margin: 15px 0;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            border-color: #2ab7ca;
+            outline: none;
+        }
+
         button {
             background-color: #2ab7ca;
             color: white;
             border: none;
             cursor: pointer;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            width: 50%;
+            min-width: 200px;
+            transition: all 0.3s;
         }
+
         button:hover {
             background-color: #1f9ba9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(42, 183, 202, 0.3);
         }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
         .result {
-            background: #e9fbff;
-            margin: 20px auto;
-            padding: 15px;
-            width: 80%;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: #e0f2f1;
+            margin: 15px auto 30px;
+            padding: 25px;
+            width: 90%;
+            max-width: 650px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #b2dfdb;
         }
+
+        .result h4 {
+            color: #00796b;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .result textarea {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #b2dfdb;
+            color: #333;
+            cursor: text;
+            height: auto;
+            min-height: 80px;
+        }
+
         a {
             text-decoration: none;
             color: #2ab7ca;
+            font-weight: 500;
+            transition: color 0.3s;
+            display: inline-block;
+            margin-bottom: 40px;
         }
-        .header {
-            font-size: 18px;
-            font-weight: bold;
+
+        a:hover {
+            color: #178392;
+            text-decoration: underline;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #ccc, transparent);
+            margin: 35px auto;
+            width: 80%;
         }
     </style>
 </head>
+
 <body>
     <h2>🔐 Super Encryption: Caesar + AES</h2>
     <p class="header">Halo, {{ username }}!</p>
@@ -100,4 +203,5 @@
 
     <p><a href="{{ url_for('dashboard') }}">← Kembali ke Dashboard</a></p>
 </body>
+
 </html>

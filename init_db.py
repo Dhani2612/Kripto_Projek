@@ -2,11 +2,12 @@ import sqlite3
 from crypto_utils.hash_utils import md5_hash
 import os
 
-DB_PATH = "database/app.db"
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+DB_PATH = os.path.join(BASE_DIR, "database", "app.db")
 
 def init_db():
     # Buat folder 'database' jika belum ada
-    os.makedirs("database", exist_ok=True)
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
 
     # Hubungkan ke database SQLite
     conn = sqlite3.connect(DB_PATH)
@@ -21,13 +22,25 @@ def init_db():
         )
     """)
 
+    # Buat tabel encrypted_messages kalau belum ada
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS encrypted_messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL,
+            plaintext TEXT,
+            ciphertext TEXT,
+            algorithm TEXT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
     # Cek apakah sudah ada user admin
     cur.execute("SELECT * FROM users WHERE username=?", ("admin",))
     if not cur.fetchone():
-        # Tambahkan akun default admin
+        # Tambahkan akun default admin dengan hash yang aman
         cur.execute(
             "INSERT INTO users (username, password) VALUES (?, ?)",
-            ("admin", md5_hash("admin123"))
+            ("admin", md5_hash("admin123")) # md5_hash skrg menggunakan werkzeug
         )
         print("[INFO] Akun admin dibuat (username='admin', password='admin123')")
 

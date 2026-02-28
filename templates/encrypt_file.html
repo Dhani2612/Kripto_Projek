@@ -1,20 +1,101 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Enkripsi File | Kriptografi App</title>
     <style>
-        body { font-family: Arial; background-color: #eaf8f9; text-align: center; padding-top: 40px; }
-        .container { background: white; width: 50%; margin: auto; padding: 30px; border-radius: 10px;
-                     box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-        input[type="file"] { margin: 15px; }
-        button { background-color: #2ab7ca; color: white; border: none; padding: 10px 20px;
-                 border-radius: 5px; cursor: pointer; }
-        button:hover { background-color: #1f9ba9; }
-        .msg { margin-top: 20px; color: #00796b; }
-        a { text-decoration: none; color: #2ab7ca; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0fbfe 0%, #e0f2f5 100%);
+            text-align: center;
+            padding-top: 60px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            width: 90%;
+            max-width: 500px;
+            margin: auto;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        h2 {
+            color: #2ab7ca;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        input[type="file"] {
+            margin: 15px 0 25px;
+            font-size: 15px;
+        }
+
+        button {
+            background-color: #2ab7ca;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background-color: #1f9ba9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(42, 183, 202, 0.3);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .msg {
+            margin-top: 20px;
+            color: #00796b;
+            background: #e0f2f1;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #eee;
+            margin: 25px 0;
+        }
+
+        p {
+            font-size: 15px;
+            margin: 10px 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #2ab7ca;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #178392;
+            text-decoration: underline;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2>{{ "🔐 Enkripsi File (Fernet)" if mode == "encrypt" else "🔓 Dekripsi File (Fernet)" }}</h2>
@@ -38,4 +119,5 @@
         <p><a href="{{ url_for('dashboard') }}">← Kembali ke Dashboard</a></p>
     </div>
 </body>
+
 </html>

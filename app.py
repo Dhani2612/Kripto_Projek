@@ -4,7 +4,12 @@ import os
 from werkzeug.utils import secure_filename
 
 # ===== Import modul kriptografi =====
-from crypto_utils.hash_utils import md5_hash
+from dotenv import load_dotenv
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
+load_dotenv()  # Muat environment variable dari .env
+from crypto_utils.hash_utils import md5_hash, verify_md5
 from crypto_utils.caesar import caesar_encrypt, caesar_decrypt
 from crypto_utils.aes_utils import aes_encrypt, aes_decrypt
 from crypto_utils.fernet_utils import encrypt_file, decrypt_file
@@ -12,15 +17,25 @@ from crypto_utils.steganografi import encode_message, decode_message
 
 # ===== Konfigurasi dasar aplikasi =====
 app = Flask(__name__)
-app.secret_key = "supersecretkey"  # ubah di produksi
-DB_PATH = "database/app.db"
+app.secret_key = os.getenv("SECRET_KEY", "fallback_secret_key!@#")  # Menggunakan Environment Variable
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+DB_PATH = os.path.join(BASE_DIR, "database", "app.db")
 
-UPLOAD_FOLDER = "uploads"
-ENCRYPTED_FOLDER = "encrypted"
+# Inisialisasi Limiter
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"
+)
+
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
+ENCRYPTED_FOLDER = os.path.join(BASE_DIR, "encrypted")
 ALLOWED_EXTENSIONS = {"txt", "pdf", "jpg", "jpeg", "png", "docx"}
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["ENCRYPTED_FOLDER"] = ENCRYPTED_FOLDER
+os.makedirs(os.path.join(BASE_DIR, "database"), exist_ok=True)
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(ENCRYPTED_FOLDER, exist_ok=True)
 
@@ -41,6 +56,7 @@ def allowed_file(filename):
 # ROUTE: REGISTER
 # ======================================================
 @app.route("/register", methods=["GET", "POST"])
+@limiter.limit("5 per minute")  # Limitasi brute-force pendaftaran
 def register():
     if request.method == "POST":
         username = request.form["username"]
@@ -72,6 +88,7 @@ def register():
 # ROUTE: LOGIN
 # ======================================================
 @app.route("/", methods=["GET", "POST"])
+@limiter.limit("5 per minute")  # Limitasi brute-force login
 def login():
     if request.method == "POST":
         username = request.form["username"]
@@ -79,12 +96,12 @@ def login():
 
         conn = get_db_connection()
         user = conn.execute(
-            "SELECT * FROM users WHERE username=? AND password=?",
-            (username, md5_hash(password))
+            "SELECT * FROM users WHERE username=?",
+            (username,)
         ).fetchone()
         conn.close()
 
-        if user:
+        if user and verify_md5(password, user["password"]):
             session["username"] = username
             flash("✅ Login berhasil!", "success")
             return redirect(url_for("dashboard"))
